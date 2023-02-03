@@ -1,0 +1,11 @@
+.card-body {
+    height: 270px;
+}
+
+.EventCard:hover {
+    transform: scale(1.05);
+}
+
+.img-container {
+    height: 300px;
+}

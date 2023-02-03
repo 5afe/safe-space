@@ -1,26 +1,37 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+import './EventCard.css';
 import { ProductCollection } from '../../models/Product'
+import { TextUtils } from '../../utils/TextUtils'
 
 function EventCard({event}: {event: ProductCollection}) {
+
+  const slug = TextUtils.slugify(event.title);
+
   return (
-    <div className="col">
+    <div className="EventCard col">
           <div className="card shadow-sm">
-            <svg className="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-                <title>{event.title}</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+
+          <div className='img-container'>
+
+          <Link to={`/p/${slug}`}>
+            <img src={event.image} width={300} />
+          </Link>
+            
+          </div>
 
             <div className="card-body">
                 <h4 className='card-title'>
-                    {event.title}
+                    <Link to={`/p/${slug}`}>
+                        {event.title}
+                    </Link>
+                    
                 </h4>
               <p className="card-text">
-                This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                {event.description}
               </p>
               <div className="d-flex justify-content-between align-items-center">
-                <div className="btn-group">
-                  <button type="button" className="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" className="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small className="text-muted">9 mins</small>
+                <small className="text-muted">Available Tickets: 10</small>
               </div>
             </div>
           </div>
