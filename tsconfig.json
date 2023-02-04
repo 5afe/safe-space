@@ -20,7 +20,10 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
+  "outdir": "dist",
   "include": [
-    "src"
+    "src",
+    "server",
+    "server/handler.ts"  
   ]
 }
