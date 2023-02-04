@@ -1,4 +1,5 @@
 /* hardhat.config.js */
+require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-etherscan");
 require("./scripts/deploy.js");

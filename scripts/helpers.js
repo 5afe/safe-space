@@ -20,7 +20,8 @@ const getHardhatSettings = () => {
   Object.values(chainConfigs).forEach(chainConfig => {
     networks[(chainConfig.NETWORK_NAME).toLowerCase()] = {
       url: chainConfig.RPC_URL,
-      accounts: [`0x${CONTRACT_DEPLOYMENT_WALLET_PRIVATE_KEY}`]
+      accounts: [`0x${CONTRACT_DEPLOYMENT_WALLET_PRIVATE_KEY}`],
+      chainId: Number.parseInt(chainConfig.CHAIN_ID),
     }
   });
 
@@ -30,30 +31,16 @@ const getHardhatSettings = () => {
   
 }
 
-const hardHatSettings = {
-
-    
-    networks: {
-        goerli: {
-          url: `https://rinkeby.infura.io/v3/${INFURA_API_KEY}`,
-          accounts: [`0x${CONTRACT_DEPLOYMENT_WALLET_PRIVATE_KEY}`],
-          chainId: 5
-        },
-    }
-};
-
-console.log("getHardhatSettings", getHardhatSettings());
-console.log("hardHatSettings", hardHatSettings);
-
 // Helper method for fetching a connection provider to the Ethereum network
 function getNetworkSetting(chainId) {
-    return Object.values(hardHatSettings.networks).find(chainSettings => chainSettings.chainId == chainId);
+    return Object.values(getHardhatSettings().networks).find(chainSettings => chainSettings.chainId == chainId);
 }
 
 
 // Helper method for fetching a connection provider to the Ethereum network
 function getProvider(chainId) {
     const hardhatChainNetwork = getNetworkSetting(chainId);
+    console.log('hardhatChainNetwork?.url', hardhatChainNetwork?.url);
     return ethers.getDefaultProvider(hardhatChainNetwork?.url);
 }
 
@@ -71,7 +58,6 @@ function getAccount(chainId) {
 module.exports = {
     getAvailableChains,
     chainConfigFilePath,
-    hardHatSettings,
     getProvider,
     getAccount,
     getNetworkSetting,

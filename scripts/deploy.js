@@ -67,14 +67,28 @@ task("deploy:market", "Deploys the Market.sol contract")
   const account = getAccount(chainId);
   const provider = getProvider(chainId);
   console.log({provider});
-  const gasPrice = await provider.getGasPrice();
+  let gasPrice;
+  
+  try {
+    gasPrice = await provider.getGasPrice();
+  } catch (e) {
+    console.error("\x1b[31m%s\x1b[0m", `Could not get gas price. Please check your network connection. ${e}}`);
+    gasPrice = null;
+  }
+  
   let NFTMarket;
   if (account) {
     NFTMarket = await hre.ethers.getContractFactory("NFTMarket", account);
   } else {
     NFTMarket = await hre.ethers.getContractFactory("NFTMarket");
   }
-  const nftMarket = await NFTMarket.deploy({gasPrice});
+  let nftMarket;
+
+  if (gasPrice) {
+    nftMarket = await NFTMarket.deploy({gasPrice});
+  } else {
+    nftMarket = await NFTMarket.deploy();
+  }
   await nftMarket.deployed();
 
 
