@@ -41,5 +41,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@openzeppelin/contracts": "^4.8.1",
+    "hardhat": "^2.12.6"
   }
 }
