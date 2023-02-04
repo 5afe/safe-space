@@ -12,7 +12,7 @@ function Header() {
           </Link>
         </p>
         <p className="float-end mb-1">
-          <Link to="/wallet">
+          <Link to="/wallet/create">
             Wallet
           </Link>
         </p>
