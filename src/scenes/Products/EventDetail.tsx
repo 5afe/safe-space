@@ -26,7 +26,7 @@ function EventDetail() {
               <small className="text-muted">Available Tickets: 10</small>
             </div>
             <button className='btn btn-primary m-3'>
-              Buy NFT
+              Buy Ticket
             </button>
           </div>
 
