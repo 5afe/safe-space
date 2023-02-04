@@ -15,7 +15,7 @@ function EventCard({event}: {event: ProductCollection}) {
           <div className='img-container'>
 
           <Link to={`/p/${slug}`}>
-            <img src={event.image} width={300} />
+            <img src={event.image} width='100%' alt={event.title} />
           </Link>
             
           </div>

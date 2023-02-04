@@ -1,23 +1,21 @@
 import React from 'react'
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { SAMPLE_EVENTS } from '../../models/Product';
-import { TextUtils } from '../../utils/TextUtils';
-import EventCard from './EventCard'
 
 function EventDetail() {
   const {eventId} = useParams();
   const event = SAMPLE_EVENTS.find(value=> value.slug===eventId)!;
 
   return (
-    <div>
-        <h1 className='text-center my-3'>
+    <div className='EventDetail container card shadow my-5 p-5'>
+        <h1 className='text-center mb-3'>
                 {event.title}
         </h1>
         <div className="container">
           
         <div className="card shadow-sm">
 
-          <img src={event.image} width={300} />
+          <img src={event.image} width={300} alt={event.title} />
           
 
           <div className="card-body">

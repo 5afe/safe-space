@@ -7,5 +7,13 @@
 }
 
 .img-container {
-    height: 300px;
+    height: 330px;
+}
+
+/*Small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {
+    
+    .img-container {
+        height: 400px;
+    }
 }
