@@ -11,45 +11,39 @@ function getAvailableChains() {
     return chainConfigs
 }
 
+const getHardhatSettings = () => {
+
+  const chainConfigs = getAvailableChains();
+
+  const networks = {};
+  
+  Object.values(chainConfigs).forEach(chainConfig => {
+    networks[(chainConfig.NETWORK_NAME).toLowerCase()] = {
+      url: chainConfig.RPC_URL,
+      accounts: [`0x${CONTRACT_DEPLOYMENT_WALLET_PRIVATE_KEY}`]
+    }
+  });
+
+  return {
+    networks,
+  }
+  
+}
+
 const hardHatSettings = {
+
+    
     networks: {
-        mumbai: {
-          url: `https://polygon-mumbai.infura.io/v3/${INFURA_API_KEY}`,
-          accounts: [`0x${CONTRACT_DEPLOYMENT_WALLET_PRIVATE_KEY}`],
-          chainId: 80001
-        },
-        alfajores: {
-          url: `https://alfajores-forno.celo-testnet.org`,
-          accounts: [`0x${CONTRACT_DEPLOYMENT_WALLET_PRIVATE_KEY}`],
-          chainId: 44787
-        },
-        rinkeby: {
+        goerli: {
           url: `https://rinkeby.infura.io/v3/${INFURA_API_KEY}`,
           accounts: [`0x${CONTRACT_DEPLOYMENT_WALLET_PRIVATE_KEY}`],
-          chainId: 4
+          chainId: 5
         },
-        harmonytestnet: {
-          url: `https://api.s0.b.hmny.io`,
-          accounts: [`0x${CONTRACT_DEPLOYMENT_WALLET_PRIVATE_KEY}`],
-          chainId: 1666700000
-        },
-        bsctestnet: {
-          url: `https://data-seed-prebsc-1-s1.binance.org:8545`,
-          accounts: [`0x${CONTRACT_DEPLOYMENT_WALLET_PRIVATE_KEY}`],
-          chainId: 97
-        },
-        binance: {
-          url: `https://bsc-dataseed.binance.org`,
-          accounts: [`0x${CONTRACT_DEPLOYMENT_WALLET_PRIVATE_KEY}`],
-          chainId: 56
-        },
-        polygon: {
-          url: `https://polygon-rpc.com`,
-          accounts: [`0x${CONTRACT_DEPLOYMENT_WALLET_PRIVATE_KEY}`],
-          chainId: 137
-        }
     }
 };
+
+console.log("getHardhatSettings", getHardhatSettings());
+console.log("hardHatSettings", hardHatSettings);
 
 // Helper method for fetching a connection provider to the Ethereum network
 function getNetworkSetting(chainId) {
@@ -80,5 +74,6 @@ module.exports = {
     hardHatSettings,
     getProvider,
     getAccount,
-    getNetworkSetting
+    getNetworkSetting,
+    getHardhatSettings
 }

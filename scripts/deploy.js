@@ -66,6 +66,7 @@ task("deploy:market", "Deploys the Market.sol contract")
 
   const account = getAccount(chainId);
   const provider = getProvider(chainId);
+  console.log({provider});
   const gasPrice = await provider.getGasPrice();
   let NFTMarket;
   if (account) {

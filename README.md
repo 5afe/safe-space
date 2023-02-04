@@ -14,3 +14,7 @@ yarn install
 yarn start
 ```
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+## Deploying smart contracts
+
+`npx hardhat deploy --chain-id 5`
