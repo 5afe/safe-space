@@ -48,3 +48,13 @@ npx hardhat deploy --chain-id 5
 1. NFT Marketplace: https://goerli.etherscan.io/address/0xa0a3c753387050d1949d6b8db672fff724b635c1#code
 
 1. NFT: https://goerli.etherscan.io/address/0x85942528541a1d7db9e9d84a074d0b2204c94b5a#code
+
+## Deploying a Smart Contract
+
+1. Get your infura API key.
+1. Add it to `.env`
+
+```bash
+source .env
+node server/CreateNFT.js 'server/nfts.json'
+```

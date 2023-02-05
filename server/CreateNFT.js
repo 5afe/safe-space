@@ -93,6 +93,7 @@ const createNFT = async (request) =>{
     }
 }
 
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 const createNFTFromJson = async (jsonFile) => {
 
@@ -103,6 +104,12 @@ const createNFTFromJson = async (jsonFile) => {
     try {
         const createNFTResults = await Promise.all(nfts.map(async (createNftRequest) => {
           try {
+            // wait for 1 second to avoid Error: replacement transaction underpriced
+            // otherwise we get this error when we try to mint multiple NFTs in a row
+            // since it will try to replace the previous transaction
+            // TODO not working still getting:
+            // Error: replacement transaction underpriced reason: 'replacement fee too low', code: 'REPLACEMENT_UNDERPRICED',
+            await delay(1000)
             const nftResult = await createNFT(createNftRequest);
             return nftResult
           } catch (error) {
