@@ -4,8 +4,20 @@
             "name": "Safe Logo [Goerli]",
             "description": "The logo for safe.global",
             "image": "https://is3-ssl.mzstatic.com/image/thumb/Purple112/v4/d4/73/95/d473951a-b08a-2f58-2c81-615b8c134283/AppIcon_PROD-0-1x_U007emarketing-0-7-0-85-220.png/1200x600wa.png",
+            "attributes": [
+                {
+                    "display_type": "date", 
+                    "trait_type": "Event Date", 
+                    "value": 1677872293
+                },
+                {
+                    "trait_type": "Seat", 
+                    "value": "Row 7, Seat 3"
+                }
+            ],
             "chainId": "5",
-            "owner": "0x6Dbd26Bca846BDa60A90890cfeF8fB47E7d0f22c"
+            "owner": "0x6Dbd26Bca846BDa60A90890cfeF8fB47E7d0f22c",
+            "address": "0x85942528541a1d7db9e9d84a074d0b2204c94b5a"
         }
     },
     {
@@ -13,8 +25,20 @@
             "name": "Safe Logo [Goerli]",
             "description":  "The logo for safe.global",
             "image": "https://is3-ssl.mzstatic.com/image/thumb/Purple112/v4/d4/73/95/d473951a-b08a-2f58-2c81-615b8c134283/AppIcon_PROD-0-1x_U007emarketing-0-7-0-85-220.png/1200x600wa.png",
+            "attributes": [
+                {
+                    "display_type": "date", 
+                    "trait_type": "Event Date", 
+                    "value": 1673871493
+                },
+                {
+                    "trait_type": "Ticket Type", 
+                    "value": "Afternoon Pass"
+                }
+            ],
             "chainId": "5",
-            "owner": "0x6Dbd26Bca846BDa60A90890cfeF8fB47E7d0f22c"
+            "owner": "0x6Dbd26Bca846BDa60A90890cfeF8fB47E7d0f22c",
+            "address": "0x85942528541a1d7db9e9d84a074d0b2204c94b5a"
         }
     }
 ]

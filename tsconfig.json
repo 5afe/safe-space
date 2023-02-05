@@ -22,8 +22,6 @@
   },
   "outdir": "dist",
   "include": [
-    "src",
-    "server",
-    "server/handler.ts"  
+    "src"
   ]
 }

@@ -13,4 +13,4 @@ export class Chain {
     public constructor(props: Chain) {
         Object.assign(this, props);
     }
-}
+} 

@@ -40,7 +40,6 @@ function getNetworkSetting(chainId) {
 // Helper method for fetching a connection provider to the Ethereum network
 function getProvider(chainId) {
     const hardhatChainNetwork = getNetworkSetting(chainId);
-    console.log('hardhatChainNetwork?.url', hardhatChainNetwork?.url);
     return ethers.getDefaultProvider(hardhatChainNetwork?.url);
 }
 
