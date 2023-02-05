@@ -49,10 +49,11 @@ npx hardhat deploy --chain-id 5
 
 1. NFT: https://goerli.etherscan.io/address/0x85942528541a1d7db9e9d84a074d0b2204c94b5a#code
 
-## Deploying a Smart Contract
+## Deploying an NFT to an existing Smart Contract
 
 1. Get your infura API key.
 1. Add it to `.env`
+1. Edit `server/nfts.json`
 
 ```bash
 source .env
