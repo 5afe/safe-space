@@ -3,14 +3,13 @@ import EventsList from "./scenes/Products/EventsList";
 import EventDetail from "./scenes/Products/EventDetail";
 import Header from "./components/Header/Header";
 import WalletCreate from "./scenes/Wallet/WalletCreate";
-import { Web3Button, Web3Modal } from "@web3modal/react";
+import { Web3Modal } from "@web3modal/react";
 import {
   EthereumClient,
   modalConnectors,
   walletConnectProvider,
 } from "@web3modal/ethereum";
-import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { goerli } from "wagmi/chains";
+import { configureChains, createClient, goerli } from '@wagmi/core'
 
 export default function WebApp() {
   const chains = [goerli];
@@ -34,7 +33,6 @@ export default function WebApp() {
   const ethereumClient = new EthereumClient(wagmiClient, chains);
   return (
     <div>
-      <WagmiConfig client={wagmiClient}>
         <BrowserRouter>
           <Header />
           <Routes>
@@ -43,7 +41,6 @@ export default function WebApp() {
             <Route path="/p/:eventId" element={<EventDetail />} />
           </Routes>
         </BrowserRouter>
-      </WagmiConfig>
       <Web3Modal
         projectId="206fc16a8983532894a251baeafa4b0d"
         ethereumClient={ethereumClient}

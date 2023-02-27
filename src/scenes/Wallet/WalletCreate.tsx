@@ -40,55 +40,55 @@ function WalletCreate() {
       threshold
     );
 
-    // console.log(safe);
+    console.log(safe);
   };
 
   return (
-      <div className="EventDetail container card shadow my-5 p-5">
-        <h1 className="text-center mb-3">Create a Wallet</h1>
-        <form>
-          {inputs.map((input, index) => (
-            <div key={input.key} className="form-group">
-              <input
-                type="text"
-                className="form-control"
-                placeholder={`Owner ${index + 1} Address`}
-                value={input.value}
-                onChange={(e) => handleInputChange(e, index)}
-              />
-              <button
-                type="button"
-                className="btn btn-outline-danger my-2"
-                onClick={() => removeInput(input)}
-              >
-                Remove
-              </button>
-            </div>
-          ))}
-          <button
-            type="button"
-            className="btn btn-outline-primary my-2"
-            onClick={addInput}
-          >
-            Add Another Owner
-          </button>
-          <div>
-            <hr />
-
-            <label>Owners needed to approve a transaction</label>
+    <div className="EventDetail container card shadow my-5 p-5">
+      <h1 className="text-center mb-3">Create a Wallet</h1>
+      <form>
+        {inputs.map((input, index) => (
+          <div key={input.key} className="form-group">
             <input
-              type="number"
+              type="text"
               className="form-control"
-              value={threshold || inputs.length}
-              onChange={handleThresholdChange}
+              placeholder={`Owner ${index + 1} Address`}
+              value={input.value}
+              onChange={(e) => handleInputChange(e, index)}
             />
+            <button
+              type="button"
+              className="btn btn-outline-danger my-2"
+              onClick={() => removeInput(input)}
+            >
+              Remove
+            </button>
           </div>
-          <button className="btn btn-primary my-2" onClick={createWallet}>
-            Create Wallet
-          </button>
-          <Web3Button />
-        </form>
-      </div>
+        ))}
+        <button
+          type="button"
+          className="btn btn-outline-primary my-2"
+          onClick={addInput}
+        >
+          Add Another Owner
+        </button>
+        <div>
+          <hr />
+
+          <label>Owners needed to approve a transaction</label>
+          <input
+            type="number"
+            className="form-control"
+            value={threshold || inputs.length}
+            onChange={handleThresholdChange}
+          />
+        </div>
+        <button className="btn btn-primary my-2" onClick={createWallet}>
+          Create Wallet
+        </button>
+        <Web3Button />
+      </form>
+    </div>
   );
 }
 
