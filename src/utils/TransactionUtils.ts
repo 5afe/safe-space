@@ -8,7 +8,7 @@ declare global {
     }
 }
 
-export class TransactioUtils {
+export class TransactionUtils {
     
     /**
      * https://stackoverflow.com/a/1054862/5405197
