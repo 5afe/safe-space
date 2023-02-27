@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { TextUtils } from "../../utils/TextUtils";
 import { TransactionUtils } from "../../utils/TransactionUtils";
-import { Web3Button } from "@web3modal/react";
+import { useWeb3Modal } from "@web3modal/react";
+import { getAccount } from "@wagmi/core";
 
 function WalletCreate() {
   const [inputs, setInputs] = useState([
@@ -9,6 +10,8 @@ function WalletCreate() {
   ]);
   // usestate for threshold
   const [threshold, setThreshold] = useState(1);
+  const { open } = useWeb3Modal();
+  const account = getAccount();
 
   const addInput = () => {
     setInputs([...inputs, { key: TextUtils.randomString(), value: "" }]);
@@ -41,6 +44,13 @@ function WalletCreate() {
     );
 
     console.log(safe);
+  };
+
+  const handleOpenModal = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+    await open();
   };
 
   return (
@@ -83,10 +93,15 @@ function WalletCreate() {
             onChange={handleThresholdChange}
           />
         </div>
-        <button className="btn btn-primary my-2" onClick={createWallet}>
-          Create Wallet
-        </button>
-        <Web3Button />
+        {account.isConnected ? (
+          <button className="btn btn-primary my-2" onClick={createWallet}>
+            Create Wallet
+          </button>
+        ) : (
+          <button className="btn btn-primary my-2" onClick={handleOpenModal}>
+            Connect Wallet
+          </button>
+        )}
       </form>
     </div>
   );
