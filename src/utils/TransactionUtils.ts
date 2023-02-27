@@ -20,6 +20,7 @@ export class TransactioUtils {
         }
     
         // Triggers the wallet to ask the user to sign in
+        // Add WalletConenct integration here
         await  window.ethereum.send("eth_requestAccounts")
         const  provider = new  ethers.providers.Web3Provider(window.ethereum)
         const  signer = provider.getSigner()
