@@ -11,20 +11,15 @@ export class TransactionUtils {
     static createMultisigWallet =  async (owners: Array<string>, threshold: number) => {
         console.log({owners, threshold})
 
-        // Triggers the wallet to ask the user to sign in
         // Add WalletConnect integration v2
-        // await  window.ethereum.send("eth_requestAccounts")
-        // const  provider = new  ethers.providers.Web3Provider(window.ethereum)
         const provider = getProvider()
-
-        // const  signer = provider.getSigner()
         const signer = await fetchSigner()
-
 
         console.log({provider, signer})
 
         console.log('Deploying Safe...')
 
+        if (!signer) throw new Error('No signer found')
         const ethAdapter = new EthersAdapter({
         ethers,
         signerOrProvider: signer
