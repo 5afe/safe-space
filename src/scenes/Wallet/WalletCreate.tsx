@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { TextUtils } from '../../utils/TextUtils';
+import { TransactioUtils } from '../../utils/TransactionUtils';
 
 function WalletCreate() {
   const [inputs, setInputs] = useState([{ key: TextUtils.randomString(), value: '' }]);
   // usestate for threshold
-  const [threshold, setThreshold] = useState(0);
+  const [threshold, setThreshold] = useState(1);
   
   
 
@@ -29,8 +30,12 @@ function WalletCreate() {
     setInputs(inputs.filter((input, i) => input.key !== inputToRemove.key));
   };
 
-  const createWallet = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const createWallet = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+    console.log(inputs);
+    const safe = await TransactioUtils.createMultisigWallet(inputs.map((input) => input.value), threshold);
+
+    console.log(safe);
   };
 
   return (
@@ -44,7 +49,7 @@ function WalletCreate() {
             <input
               type="text"
               className="form-control"
-              placeholder={`Signer ${index + 1} Address`}
+              placeholder={`Owner ${index + 1} Address`}
               value={input.value}
               onChange={(e) => handleInputChange(e, index)}
             />
@@ -62,13 +67,13 @@ function WalletCreate() {
           className="btn btn-outline-primary my-2"
           onClick={addInput}
         >
-          Add Another Signer
+          Add Another Owner
         </button>
         <div>
           <hr/>
 
         <label>
-        Signers needed to approve a transaction
+        Owners needed to approve a transaction
         </label>
         <input
               type="number"
