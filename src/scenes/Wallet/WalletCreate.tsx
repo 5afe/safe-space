@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TextUtils } from '../../utils/TextUtils';
 import { TransactioUtils } from '../../utils/TransactionUtils';
+import TransactionManagement from '../Transaction/TransactionManagement';
 
 function WalletCreate() {
   const [inputs, setInputs] = useState([{ key: TextUtils.randomString(), value: '' }]);
@@ -39,6 +40,7 @@ function WalletCreate() {
   };
 
   return (
+    <div>
     <div className='EventDetail container card shadow my-5 p-5'>
         <h1 className='text-center mb-3'>
                 Create a Wallet
@@ -86,6 +88,8 @@ function WalletCreate() {
           Create Wallet
         </button>
       </form>
+    </div>
+    <TransactionManagement />
     </div>
   );
 }
