@@ -23,6 +23,9 @@ function TransactionManagement() {
 
   return (
     <div className='TransactionManagement container card shadow my-5 p-5'>
+        <h1 className='text-center mb-3'>
+                Manage Transactions
+        </h1>
         <ul className="nav nav-tabs" id="popupTab" role="tablist">
           {steps.map((step, index) => {
             return (
