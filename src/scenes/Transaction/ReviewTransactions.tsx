@@ -1,6 +1,6 @@
 import SafeServiceClient from '@safe-global/safe-service-client';
 import React, { useEffect, useState } from 'react'
-import { TransactioUtils } from '../../utils/TransactionUtils';
+import { TransactioUtils as TransactionUtils } from '../../utils/TransactionUtils';
 
 function ReviewTransactions() {
 
@@ -14,7 +14,7 @@ function ReviewTransactions() {
 
         async function getPendingTransactions() {
             const txServiceUrl = 'https://safe-transaction-goerli.safe.global'
-            const ethAdapter = await TransactioUtils.getEthAdapter()
+            const ethAdapter = await TransactionUtils.getEthAdapter()
             const safeService = new SafeServiceClient({ txServiceUrl, ethAdapter })
             const pendingTransactionsResults = (await safeService.getPendingTransactions(safeAddress)).results
             setPendingTransactions(pendingTransactionsResults);
@@ -26,7 +26,7 @@ function ReviewTransactions() {
     const confirmTransacton = async (event: React.MouseEvent<HTMLButtonElement>, transactionHash: string) => {
         event.preventDefault();
         console.log(event.currentTarget);
-        const response = await TransactioUtils.confirmTransaction(safeAddress, transactionHash)
+        const response = await TransactionUtils.confirmTransaction(safeAddress, transactionHash)
         console.log(response);
     }
     
