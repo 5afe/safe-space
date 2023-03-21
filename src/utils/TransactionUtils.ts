@@ -16,16 +16,20 @@ export class TransactioUtils {
      * https://stackoverflow.com/a/1054862/5405197
      */
 
-    static getEthAdapter = async () => {
+    static getEthAdapter = async (useSigner: boolean = true) => {
 
         if (!window.ethereum) {
             throw  new  Error("No crypto wallet found. Please install it.")
         }
     
-        // Triggers the wallet to ask the user to sign in
-        await  window.ethereum.send("eth_requestAccounts")
         const  provider = new  ethers.providers.Web3Provider(window.ethereum)
-        const  signer = provider.getSigner()
+        let signer;
+
+        if(useSigner) {
+            // Triggers the wallet to ask the user to sign in
+            await  window.ethereum.send("eth_requestAccounts")
+            signer = provider.getSigner()
+        }
 
         console.log({provider, signer})
 
@@ -33,7 +37,7 @@ export class TransactioUtils {
 
         const ethAdapter = new EthersAdapter({
         ethers,
-        signerOrProvider: signer
+        signerOrProvider: signer || provider
         })
 
         return ethAdapter;
@@ -101,5 +105,28 @@ export class TransactioUtils {
         })
         console.log(`Transaction sent to the Safe Service: 
         https://safe-transaction-goerli.safe.global/api/v1/multisig-transactions/${safeTxHash}`)
+    }
+
+    static confirmTransaction = async (safeAddress: string, safeTxHash: string) => {
+
+        const ethAdapter = await this.getEthAdapter();
+        const signer = ethAdapter.getSigner()!;
+        const safeService = new SafeServiceClient({ txServiceUrl: 'https://safe-transaction-goerli.safe.global', ethAdapter })
+        const ethAdapterOwner2 = new EthersAdapter({
+            ethers,
+            signerOrProvider: signer
+          })
+          
+          const safeSdkOwner2 = await Safe.create({
+            ethAdapter: ethAdapterOwner2,
+            safeAddress
+          })
+          
+          const signature = await safeSdkOwner2.signTransactionHash(safeTxHash)
+          const response = await safeService.confirmTransaction(safeTxHash, signature.data)
+
+        console.log(`Transaction confirmed to the Safe Service: 
+        https://safe-transaction-goerli.safe.global/api/v1/multisig-transactions/${safeTxHash}`)
+          return response
     }
 }
