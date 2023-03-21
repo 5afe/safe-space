@@ -7,6 +7,8 @@ function WalletCreate() {
   const [inputs, setInputs] = useState([{ key: TextUtils.randomString(), value: '' }]);
   // usestate for threshold
   const [threshold, setThreshold] = useState(1);
+  // usestate for safe address
+  const [safeAddress, setSafeAddress] = useState('');
   
   
 
@@ -88,6 +90,27 @@ function WalletCreate() {
           Create Wallet
         </button>
       </form>
+      <hr />
+
+      <h3 className='text-center mb-3'>
+             Load a Wallet
+      </h3>
+      <input
+              type="text"
+              className="form-control"
+              placeholder={`Existing Safe Address`}
+              value={safeAddress}
+              onChange={(e) => setSafeAddress(e.target.value)}
+            />
+        <button
+          type="button"
+          className="btn btn-outline-primary my-2"
+          onClick={() => {
+            localStorage.setItem('safeAddress', safeAddress);
+          }}
+        >
+          Save Safe Address to Local Storage
+        </button>
     </div>
     <TransactionManagement />
     </div>
