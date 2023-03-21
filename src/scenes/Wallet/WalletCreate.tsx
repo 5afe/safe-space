@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { TextUtils } from '../../utils/TextUtils';
-import { TransactioUtils } from '../../utils/TransactionUtils';
+import { TransactionUtils } from '../../utils/TransactionUtils';
+import TransactionManagement from '../Transaction/TransactionManagement';
 
 function WalletCreate() {
   const [inputs, setInputs] = useState([{ key: TextUtils.randomString(), value: '' }]);
   // usestate for threshold
   const [threshold, setThreshold] = useState(1);
+  // usestate for safe address
+  const [safeAddress, setSafeAddress] = useState(localStorage.getItem('safeAddress')||'');
   
   
 
@@ -33,12 +36,13 @@ function WalletCreate() {
   const createWallet = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     console.log(inputs);
-    const safe = await TransactioUtils.createMultisigWallet(inputs.map((input) => input.value), threshold);
+    const safe = await TransactionUtils.createMultisigWallet(inputs.map((input) => input.value), threshold);
 
     console.log(safe);
   };
 
   return (
+    <div>
     <div className='EventDetail container card shadow my-5 p-5'>
         <h1 className='text-center mb-3'>
                 Create a Wallet
@@ -86,6 +90,29 @@ function WalletCreate() {
           Create Wallet
         </button>
       </form>
+      <hr />
+
+      <h3 className='text-center mb-3'>
+             Load a Wallet
+      </h3>
+      <input
+              type="text"
+              className="form-control"
+              placeholder={`Existing Safe Address`}
+              value={safeAddress}
+              onChange={(e) => setSafeAddress(e.target.value)}
+            />
+        <button
+          type="button"
+          className="btn btn-outline-primary my-2"
+          onClick={() => {
+            localStorage.setItem('safeAddress', safeAddress);
+          }}
+        >
+          Save Safe Address to Local Storage
+        </button>
+    </div>
+    <TransactionManagement />
     </div>
   );
 }
