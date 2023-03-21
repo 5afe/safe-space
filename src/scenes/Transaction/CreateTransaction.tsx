@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import { SafeTransactionDataPartial } from '@safe-global/safe-core-sdk-types'
 function CreateTransaction() {
     const [address, setAddress] = useState<string>('');
     const [amount, setAmount] = useState<number>(0);

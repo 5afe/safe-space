@@ -1,6 +1,8 @@
 import { ethers } from "ethers"
 import EthersAdapter from '@safe-global/safe-ethers-lib'
 import Safe, { SafeFactory, SafeAccountConfig } from '@safe-global/safe-core-sdk'
+import { SafeTransactionDataPartial } from "@safe-global/safe-core-sdk-types"
+import SafeServiceClient from '@safe-global/safe-service-client'
 
 declare global {
     interface Window {
@@ -13,8 +15,9 @@ export class TransactioUtils {
     /**
      * https://stackoverflow.com/a/1054862/5405197
      */
-    static createMultisigWallet =  async (owners: Array<string>, threshold: number) => {
-        console.log({owners, threshold})
+
+    static getEthAdapter = async () => {
+
         if (!window.ethereum) {
             throw  new  Error("No crypto wallet found. Please install it.")
         }
@@ -32,6 +35,13 @@ export class TransactioUtils {
         ethers,
         signerOrProvider: signer
         })
+
+        return ethAdapter;
+    }
+    static createMultisigWallet =  async (owners: Array<string>, threshold: number) => {
+        console.log({owners, threshold})
+
+        const ethAdapter = await this.getEthAdapter();
         const safeFactory = await SafeFactory.create({ ethAdapter })
 
         console.log({ethAdapter, safeFactory})
@@ -54,5 +64,42 @@ export class TransactioUtils {
         console.log(`https://app.safe.global/gor:${safeAddress}`)
 
         return { safe }
+    }
+
+    static createTransaction = async (safeAddress: string, destination: string, amount: number|string) => {
+
+        amount = ethers.utils.parseUnits(amount.toString(), 'ether').toString()
+
+        const safeTransactionData: SafeTransactionDataPartial = {
+        to: destination,
+        data: '0x',
+        value: amount
+        }
+
+        const ethAdapter = await this.getEthAdapter();
+        const safeSDK = await Safe.create({
+            ethAdapter,
+            safeAddress
+        })
+        // Create a Safe transaction with the provided parameters
+        const safeTransaction = await safeSDK.createTransaction({ safeTransactionData })
+
+        // Deterministic hash based on transaction parameters
+        const safeTxHash = await safeSDK.getTransactionHash(safeTransaction)
+
+        // Sign transaction to verify that the transaction is coming from owner 1
+        const senderSignature = await safeSDK.signTransactionHash(safeTxHash)
+
+        const txServiceUrl = 'https://safe-transaction-goerli.safe.global'
+        const safeService = new SafeServiceClient({ txServiceUrl, ethAdapter })
+        await safeService.proposeTransaction({
+            safeAddress,
+            safeTransactionData: safeTransaction.data,
+            safeTxHash,
+            senderAddress: (await ethAdapter.getSignerAddress())!,
+            senderSignature: senderSignature.data,
+        })
+        console.log(`Transaction sent to the Safe Service: 
+        https://safe-transaction-goerli.safe.global/api/v1/multisig-transactions/${safeTxHash}`)
     }
 }
