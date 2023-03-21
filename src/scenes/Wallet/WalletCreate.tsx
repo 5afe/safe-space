@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextUtils } from '../../utils/TextUtils';
-import { TransactioUtils } from '../../utils/TransactionUtils';
+import { TransactionUtils } from '../../utils/TransactionUtils';
 import TransactionManagement from '../Transaction/TransactionManagement';
 
 function WalletCreate() {
@@ -8,7 +8,7 @@ function WalletCreate() {
   // usestate for threshold
   const [threshold, setThreshold] = useState(1);
   // usestate for safe address
-  const [safeAddress, setSafeAddress] = useState('');
+  const [safeAddress, setSafeAddress] = useState(localStorage.getItem('safeAddress')||'');
   
   
 
@@ -36,7 +36,7 @@ function WalletCreate() {
   const createWallet = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     console.log(inputs);
-    const safe = await TransactioUtils.createMultisigWallet(inputs.map((input) => input.value), threshold);
+    const safe = await TransactionUtils.createMultisigWallet(inputs.map((input) => input.value), threshold);
 
     console.log(safe);
   };

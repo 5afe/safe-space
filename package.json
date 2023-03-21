@@ -17,6 +17,7 @@
     "assert": "^2.0.0",
     "axios": "^1.3.2",
     "bootstrap": "^5.2.3",
+    "buffer": "^6.0.3",
     "ethers": "5.7.2",
     "ipfs-http-client": "50.1.2",
     "react": "^18.2.0",

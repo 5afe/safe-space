@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { SafeTransactionDataPartial } from '@safe-global/safe-core-sdk-types'
-import { TransactioUtils } from '../../utils/TransactionUtils';
+import { TransactionUtils } from '../../utils/TransactionUtils';
 function CreateTransaction() {
     const [address, setAddress] = useState<string>('');
     const [amount, setAmount] = useState<number>(0);
@@ -14,7 +13,8 @@ function CreateTransaction() {
     }
 
     function createTransaction() {
-        const result = TransactioUtils.createTransaction(localStorage.getItem('safeAddress')!, address, amount);
+        const result = TransactionUtils.createTransaction(localStorage.getItem('safeAddress')!, address, amount);
+        console.log(result);
     }
     
   return (
