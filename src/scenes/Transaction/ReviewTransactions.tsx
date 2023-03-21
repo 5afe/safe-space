@@ -14,7 +14,7 @@ function ReviewTransactions() {
 
         async function getPendingTransactions() {
             const txServiceUrl = 'https://safe-transaction-goerli.safe.global'
-            const ethAdapter = await TransactionUtils.getEthAdapter()
+            const ethAdapter = await TransactionUtils.getEthAdapter(false)
             const safeService = new SafeServiceClient({ txServiceUrl, ethAdapter })
             const pendingTransactionsResults = (await safeService.getPendingTransactions(safeAddress)).results
             setPendingTransactions(pendingTransactionsResults);
@@ -25,8 +25,13 @@ function ReviewTransactions() {
 
     const confirmTransacton = async (event: React.MouseEvent<HTMLButtonElement>, transactionHash: string) => {
         event.preventDefault();
-        console.log(event.currentTarget);
         const response = await TransactionUtils.confirmTransaction(safeAddress, transactionHash)
+        console.log(response);
+    }
+
+    const executeTransaction = async (event: React.MouseEvent<HTMLButtonElement>, transactionHash: string) => {
+        event.preventDefault();
+        const response = await TransactionUtils.executeTransaction(safeAddress, transactionHash)
         console.log(response);
     }
     
@@ -47,13 +52,26 @@ function ReviewTransactions() {
             <tbody>
             {pendingTransactions.map((transaction) => (
                 <tr key={transaction.hash}>
-                    <td>{transaction.hash}</td>
+                    <td>
+                        <a href={`https://safe-transaction-goerli.safe.global/api/v1/multisig-transactions/${transaction.hash}`} 
+                            target="_blank" rel="noreferrer">
+                            {transaction.hash}
+                        </a>
+                    </td>
                     <td>{transaction.to}</td>
                     <td>{transaction.value}</td>
                     <td>{transaction.timestamp}</td>
                     <td>
                         <button className="btn btn-primary btn-success my-2" 
                         onClick={(event)=>confirmTransacton(event, transaction.hash)}>Confirm</button>
+
+                        {
+                            transaction.confirmationsRequired === transaction.confirmations.length &&
+                            <button className="btn btn-primary btn-success my-2" 
+                                onClick={(event)=>executeTransaction(event, transaction.hash)}>
+                                    Execute
+                            </button>
+                        }
                     </td>
                 </tr>
             ))}

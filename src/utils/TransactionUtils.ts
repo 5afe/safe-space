@@ -110,23 +110,40 @@ export class TransactioUtils {
     static confirmTransaction = async (safeAddress: string, safeTxHash: string) => {
 
         const ethAdapter = await this.getEthAdapter();
-        const signer = ethAdapter.getSigner()!;
         const safeService = new SafeServiceClient({ txServiceUrl: 'https://safe-transaction-goerli.safe.global', ethAdapter })
-        const ethAdapterOwner2 = new EthersAdapter({
-            ethers,
-            signerOrProvider: signer
-          })
           
-          const safeSdkOwner2 = await Safe.create({
-            ethAdapter: ethAdapterOwner2,
+          const safeSdk = await Safe.create({
+            ethAdapter,
             safeAddress
           })
           
-          const signature = await safeSdkOwner2.signTransactionHash(safeTxHash)
+          const signature = await safeSdk.signTransactionHash(safeTxHash)
           const response = await safeService.confirmTransaction(safeTxHash, signature.data)
 
         console.log(`Transaction confirmed to the Safe Service: 
         https://safe-transaction-goerli.safe.global/api/v1/multisig-transactions/${safeTxHash}`)
           return response
+    }
+
+    static executeTransaction = async (safeAddress: string, safeTxHash: string) => {
+
+        const ethAdapter = await this.getEthAdapter();
+        const safeService = new SafeServiceClient({ txServiceUrl: 'https://safe-transaction-goerli.safe.global', ethAdapter })
+          
+        const safeSdk = await Safe.create({
+        ethAdapter,
+        safeAddress
+        })
+          
+        const safeTransaction = await safeService.getTransaction(safeTxHash)
+        const executeTxResponse = await safeSdk.executeTransaction(safeTransaction)
+        const receipt = await executeTxResponse.transactionResponse?.wait()!
+        
+        console.log('Transaction executed:')
+        console.log(`https://goerli.etherscan.io/tx/${receipt.transactionHash}`)
+
+        console.log(`Transaction confirmed to the Safe Service: 
+        https://safe-transaction-goerli.safe.global/api/v1/multisig-transactions/${safeTxHash}`)
+        return receipt
     }
 }
