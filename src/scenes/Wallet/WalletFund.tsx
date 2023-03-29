@@ -48,7 +48,7 @@ function WalletFund() {
               onChange={handleAddressChange}
             />
       <button className="btn btn-primary my-2" onClick={fundWallet}>
-        Buy with Card
+        Fund Wallet
       </button>
     </div>
   );
