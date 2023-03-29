@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import WalletFund from '../Wallet/WalletFund';
 import CreateTransaction from './CreateTransaction'
 import ReviewTransactions from './ReviewTransactions';
 
@@ -12,6 +13,10 @@ function TransactionManagement() {
     {
       name: 'review',
       component: <ReviewTransactions />
+    },
+    {
+      name: 'fund',
+      component: <WalletFund />
     },
   ]
   const [defaultTab, setDefaultTab] = useState<'create' | 'review' | 'execute'>('create');
