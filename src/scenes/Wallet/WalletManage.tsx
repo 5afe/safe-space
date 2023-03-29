@@ -1,21 +1,24 @@
 import React, { useState } from 'react'
-import WalletFund from '../Wallet/WalletFund';
-import CreateTransaction from './CreateTransaction'
-import ReviewTransactions from './ReviewTransactions';
+import WalletFund from './WalletFund';
+import CreateTransaction from '../Transaction/CreateTransaction'
+import ReviewTransactions from '../Transaction/ReviewTransactions';
 
-function TransactionManagement() {
+function WalletManage() {
 
   const steps = [
     {
       name: 'create',
+      title: 'Create Transaction',
       component: <CreateTransaction />,
     },
     {
       name: 'review',
+      title: 'Review Transactions',
       component: <ReviewTransactions />
     },
     {
       name: 'fund',
+      title: 'Fund Wallet',
       component: <WalletFund />
     },
   ]
@@ -24,14 +27,14 @@ function TransactionManagement() {
   return (
     <div className='TransactionManagement container card shadow my-5 p-5'>
         <h1 className='text-center mb-3'>
-                Manage Transactions
+                Manage Wallet
         </h1>
         <ul className="nav nav-tabs" id="popupTab" role="tablist">
           {steps.map((step, index) => {
             return (
               <li className="nav-item" role="presentation" key={index}>
                 <button className={`nav-link ${defaultTab === step.name ? 'active': ''}`} id={`${step.name}-tab`} data-bs-toggle="tab" data-bs-target={`#${step.name}`} type="button" role="tab" aria-controls={step.name} aria-selected="true" onClick={() => setDefaultTab(step.name as any)}>
-                  {step.name}
+                  {step.title}
                 </button>
               </li>
             )
@@ -52,4 +55,4 @@ function TransactionManagement() {
   )
 }
 
-export default TransactionManagement
+export default WalletManage
