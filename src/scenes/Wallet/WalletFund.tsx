@@ -44,7 +44,7 @@ function WalletFund() {
   }
 
   return (
-    <div>
+    <div id='stripe-root'>
       <label>Destination Address</label>
             <input
               className="form-control mb-3"
