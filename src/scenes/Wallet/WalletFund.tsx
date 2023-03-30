@@ -15,7 +15,6 @@ function WalletFund() {
 
   const fundWallet = async () => {
 
-
     const safeOnRamp = await SafeOnRampKit.init(SafeOnRampProviderType.Stripe, {
       onRampProviderConfig: {
         // Get public key from Stripe: https://dashboard.stripe.com/register
