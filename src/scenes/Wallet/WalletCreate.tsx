@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TextUtils } from '../../utils/TextUtils';
 import { TransactionUtils } from '../../utils/TransactionUtils';
-import TransactionManagement from '../Transaction/TransactionManagement';
+import WalletManage from './WalletManage';
 
 function WalletCreate() {
   const [inputs, setInputs] = useState([{ key: TextUtils.randomString(), value: '' }]);
@@ -112,7 +112,7 @@ function WalletCreate() {
           Save Safe Address to Local Storage
         </button>
     </div>
-    <TransactionManagement />
+    <WalletManage />
     </div>
   );
 }

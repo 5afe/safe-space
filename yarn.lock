@@ -2529,6 +2529,13 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz#8be36a1f66f3265389e90b5f9c9962146758f728"
   integrity sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==
 
+"@safe-global/onramp-kit@^0.1.0-alpha.2":
+  version "0.1.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@safe-global/onramp-kit/-/onramp-kit-0.1.0-alpha.2.tgz#cf88ecf6db1c3cfbebee267b5b9c800af1e42bad"
+  integrity sha512-GRxYSxJ1AcrCOIY3m52d80pw2NrsFo6iCUYKKlVMwd1pl8K7IVgL9sY2JoEghChayr1orJpv0PW1qypbEaR+1g==
+  dependencies:
+    "@ethersproject/address" "^5.7.0"
+
 "@safe-global/safe-core-sdk-types@^1.9.0":
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@safe-global/safe-core-sdk-types/-/safe-core-sdk-types-1.9.0.tgz#dba18f34ab905da6c1c03a3262aeb47cc0bead14"
