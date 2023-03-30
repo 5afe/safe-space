@@ -13,7 +13,7 @@ function WalletFund() {
     setAddress(event.target.value);
   }
 
-  const fundWallet = async function() {
+  const fundWallet = async () => {
         
     
     const safeOnRamp = await SafeOnRampKit.init(SafeOnRampProviderType.Stripe, {
