@@ -14,12 +14,7 @@ function ReviewTransactions() {
     useEffect(() => {
 
         async function getPendingTransactions() {
-            const txServiceUrl = 'https://safe-transaction-goerli.safe.global'
-            const ethAdapter = await TransactionUtils.getEthAdapter(false)
-            const safeService = new SafeServiceClient({ txServiceUrl, ethAdapter })
-            console.log({safeAddress, safeService});
-            const pendingTransactionsResults = (await safeService.getPendingTransactions(safeAddress)).results
-            setPendingTransactions(pendingTransactionsResults);
+            
           }
       
           getPendingTransactions()
