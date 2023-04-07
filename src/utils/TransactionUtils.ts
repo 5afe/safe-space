@@ -86,12 +86,13 @@ export class TransactionUtils {
             safeAddress
         })
 
-        const chainId = await ethAdapter.getChainId();
-        const chainInfo = CHAIN_INFO[chainId.toString()];
-
         if (sponsored) {
             return TransactionUtils.relayTransaction(safeTransactionData, safeSDK)
         }
+
+        const chainId = await ethAdapter.getChainId();
+        const chainInfo = CHAIN_INFO[chainId.toString()];
+
         // Create a Safe transaction with the provided parameters
         const safeTransaction = await safeSDK.createTransaction({ safeTransactionData })
 
