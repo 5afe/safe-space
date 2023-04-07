@@ -41,7 +41,7 @@ function CreateTransaction() {
               Create Transaction
             </button>{' '}
             <button className="btn btn-outline-primary my-2" onClick={()=>createTransaction(true)}>
-              Create SponsoredTransaction
+              Create Sponsored Transaction
             </button>
             
     </div>
