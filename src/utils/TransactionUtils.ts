@@ -1,7 +1,7 @@
 import { ethers } from "ethers"
 import EthersAdapter from '@safe-global/safe-ethers-lib'
 import Safe, { SafeFactory, SafeAccountConfig } from '@safe-global/safe-core-sdk'
-import { MetaTransactionData, OperationType, SafeTransactionDataPartial } from "@safe-global/safe-core-sdk-types"
+import { MetaTransactionData, OperationType } from "@safe-global/safe-core-sdk-types"
 import SafeServiceClient from '@safe-global/safe-service-client'
 import { GelatoRelayAdapter, MetaTransactionOptions, RelayTransaction } from "@safe-global/relay-kit"
 import { CHAIN_INFO } from "./Chain"
@@ -130,7 +130,7 @@ export class TransactionUtils {
         }
 
         // Get Gelato Relay API Key: https://relay.gelato.network/
-        const GELATO_RELAY_API_KEY=process.env.GELATO_RELAY_API_KEY!
+        const GELATO_RELAY_API_KEY=process.env.REACT_APP_GELATO_RELAY_API_KEY!
         const relayAdapter = new GelatoRelayAdapter(GELATO_RELAY_API_KEY)
     
         //Prepare the transaction
