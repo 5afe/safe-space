@@ -12,8 +12,8 @@ function CreateTransaction() {
         setAmount(Number(event.target.value));
     }
 
-    function createTransaction() {
-        const result = TransactionUtils.createTransaction(localStorage.getItem('safeAddress')!, address, amount);
+    function createTransaction(sponsored: boolean = false) {
+        const result = TransactionUtils.createTransaction(localStorage.getItem('safeAddress')!, address, amount, sponsored);
         console.log(result);
     }
     
@@ -37,8 +37,11 @@ function CreateTransaction() {
               value={amount}
               onChange={handleAmountChange}
             />
-            <button className="btn btn-primary my-2" onClick={createTransaction}>
+            <button className="btn btn-primary my-2" onClick={()=>createTransaction()}>
               Create Transaction
+            </button>{' '}
+            <button className="btn btn-outline-primary my-2" onClick={()=>createTransaction(true)}>
+              Create SponsoredTransaction
             </button>
             
     </div>
