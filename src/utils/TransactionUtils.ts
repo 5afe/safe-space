@@ -45,6 +45,8 @@ export class TransactionUtils {
         console.log({owners, threshold})
 
         const ethAdapter = await this.getEthAdapter();
+        const chainId = await ethAdapter.getChainId();
+        const chainInfo = CHAIN_INFO[chainId.toString()];
         const safeFactory = await SafeFactory.create({ ethAdapter })
 
         console.log({ethAdapter, safeFactory})
@@ -53,7 +55,7 @@ export class TransactionUtils {
             owners,
             threshold,
             // ... (Optional params) 
-            // https://github.com/safe-global/safe-core-sdk/tree/main/packages/safe-core-sdk#deploysafe
+            // https://github.com/safe-global/safe-core-sdk/tree/main/packages/protocol-kit#deploysafe
         }
 
         /* This Safe is connected to owner 1 because the factory was initialized 
@@ -63,8 +65,9 @@ export class TransactionUtils {
         const safeAddress = safe.getAddress()
 
         console.log('Your Safe has been deployed:')
-        console.log(`https://goerli.etherscan.io/address/${safeAddress}`)
-        console.log(`https://app.safe.global/gor:${safeAddress}`)
+        console.log(`${chainInfo.blockExplorerUrl}/address/${safeAddress}`)
+        console.log(`${chainInfo.transactionServiceUrl}/api/v1/safes/${safeAddress}`)
+        console.log(`https://app.safe.global/${chainInfo.symbol}:${safeAddress}`)
 
         return { safe }
     }
@@ -168,7 +171,10 @@ export class TransactionUtils {
     static confirmTransaction = async (safeAddress: string, safeTxHash: string) => {
 
         const ethAdapter = await this.getEthAdapter();
-        const safeService = new SafeApiKit({ txServiceUrl: 'https://safe-transaction-goerli.safe.global', ethAdapter })
+        const chainId = await ethAdapter.getChainId();
+        const chainInfo = CHAIN_INFO[chainId.toString()];
+        const txServiceUrl = chainInfo.transactionServiceUrl;
+        const safeService = new SafeApiKit({ txServiceUrl, ethAdapter })
           
           const safeSdk = await Safe.create({
             ethAdapter,
@@ -179,14 +185,17 @@ export class TransactionUtils {
           const response = await safeService.confirmTransaction(safeTxHash, signature.data)
 
         console.log(`Transaction confirmed to the Safe Service: 
-        https://safe-transaction-goerli.safe.global/api/v1/multisig-transactions/${safeTxHash}`)
+        ${txServiceUrl}/api/v1/multisig-transactions/${safeTxHash}`)
           return response
     }
 
     static executeTransaction = async (safeAddress: string, safeTxHash: string) => {
 
         const ethAdapter = await this.getEthAdapter();
-        const safeService = new SafeApiKit({ txServiceUrl: 'https://safe-transaction-goerli.safe.global', ethAdapter })
+        const chainId = await ethAdapter.getChainId();
+        const chainInfo = CHAIN_INFO[chainId.toString()];
+        const txServiceUrl = chainInfo.transactionServiceUrl;
+        const safeService = new SafeApiKit({ txServiceUrl, ethAdapter })
           
         const safeSdk = await Safe.create({
         ethAdapter,
@@ -198,10 +207,10 @@ export class TransactionUtils {
         const receipt = await executeTxResponse.transactionResponse?.wait()!
         
         console.log('Transaction executed:')
-        console.log(`https://goerli.etherscan.io/tx/${receipt.transactionHash}`)
+        console.log(`${chainInfo.blockExplorerUrl}/tx/${receipt.transactionHash}`)
 
         console.log(`Transaction confirmed to the Safe Service: 
-        https://safe-transaction-goerli.safe.global/api/v1/multisig-transactions/${safeTxHash}`)
+        ${txServiceUrl}/api/v1/multisig-transactions/${safeTxHash}`)
         return receipt
     }
 }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { TransactionUtils } from '../../utils/TransactionUtils';
+import { DEFAULT_DESTIANTION_ADDRESS } from '../../utils/Chain';
 function CreateTransaction() {
     const [address, setAddress] = useState<string>('');
     const [amount, setAmount] = useState<number>(0);
@@ -21,6 +22,10 @@ function CreateTransaction() {
     <div>
          <label>
         Destination Address
+        </label>
+      <br/>
+        <label className='text-muted'>
+        Example (vitalik.eth): {DEFAULT_DESTIANTION_ADDRESS}
         </label>
         <input
               className="form-control mb-3"

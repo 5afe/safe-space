@@ -2,11 +2,15 @@ import { ethers } from 'ethers';
 import SafeApiKit from '@safe-global/api-kit';
 import React, { useEffect, useState } from 'react'
 import { TransactionUtils } from '../../utils/TransactionUtils';
+import { CHAIN_INFO, DEFAULT_CHAIN_ID } from '../../utils/Chain';
 
 function ReviewTransactions() {
 
   // initialize list of pending transactions
     const [pendingTransactions, setPendingTransactions] = useState<any[]>([]);
+  // initialize transaction service url with useState
+  const [txServiceUrl, setTransactionServiceUrl] = useState<string>(CHAIN_INFO[DEFAULT_CHAIN_ID].transactionServiceUrl);
+
     
     // get safe address from local storage
     const safeAddress = localStorage.getItem('safeAddress') || '';
@@ -14,16 +18,22 @@ function ReviewTransactions() {
     useEffect(() => {
 
         async function getPendingTransactions() {
-            const txServiceUrl = 'https://safe-transaction-goerli.safe.global'
             const ethAdapter = await TransactionUtils.getEthAdapter(false)
-            const safeService = new SafeApiKit({ txServiceUrl, ethAdapter })
+
+
+            const chainId = await ethAdapter.getChainId();
+            const chainInfo = CHAIN_INFO[chainId.toString()];
+            let updatedTxServiceUrl = chainInfo.transactionServiceUrl;
+            setTransactionServiceUrl(updatedTxServiceUrl);
+            
+            const safeService = new SafeApiKit({ txServiceUrl: updatedTxServiceUrl, ethAdapter })
             console.log({safeAddress, safeService});
             const pendingTransactionsResults = (await safeService.getPendingTransactions(safeAddress)).results
             setPendingTransactions(pendingTransactionsResults);
           }
       
           getPendingTransactions()
-    }, [safeAddress])
+    }, [safeAddress, txServiceUrl])
 
     const confirmTransacton = async (event: React.MouseEvent<HTMLButtonElement>, transactionHash: string) => {
         event.preventDefault();
@@ -55,7 +65,7 @@ function ReviewTransactions() {
             {pendingTransactions.map((transaction) => (
                 <tr key={transaction.hash}>
                     <td>
-                        <a href={`https://safe-transaction-goerli.safe.global/api/v1/multisig-transactions/${transaction.safeTxHash}`} 
+                        <a href={`${txServiceUrl}/api/v1/multisig-transactions/${transaction.safeTxHash}`} 
                             target="_blank" rel="noreferrer">
                             {`${transaction.safeTxHash.substring(0, 6)}...${transaction.safeTxHash.substring(transaction.safeTxHash.length - 4)}`}
                         </a>
