@@ -1,9 +1,8 @@
 import { ethers } from "ethers"
-import EthersAdapter from '@safe-global/safe-ethers-lib'
-import Safe, { SafeFactory, SafeAccountConfig } from '@safe-global/safe-core-sdk'
-import { MetaTransactionData, OperationType } from "@safe-global/safe-core-sdk-types"
-import SafeServiceClient from '@safe-global/safe-service-client'
-import { GelatoRelayAdapter, MetaTransactionOptions, RelayTransaction } from "@safe-global/relay-kit"
+import SafeApiKit from '@safe-global/api-kit'
+import Safe, { EthersAdapter, SafeFactory, SafeAccountConfig } from '@safe-global/protocol-kit'
+import { MetaTransactionData, OperationType, MetaTransactionOptions, RelayTransaction } from "@safe-global/safe-core-sdk-types"
+import { GelatoRelayAdapter } from "@safe-global/relay-kit"
 import { CHAIN_INFO } from "./Chain"
 
 declare global {
@@ -103,7 +102,7 @@ export class TransactionUtils {
         const senderSignature = await safeSDK.signTransactionHash(safeTxHash)
 
         const txServiceUrl = chainInfo.transactionServiceUrl;
-        const safeService = new SafeServiceClient({ txServiceUrl, ethAdapter })
+        const safeService = new SafeApiKit({ txServiceUrl, ethAdapter })
         await safeService.proposeTransaction({
             safeAddress,
             safeTransactionData: safeTransaction.data,
@@ -169,7 +168,7 @@ export class TransactionUtils {
     static confirmTransaction = async (safeAddress: string, safeTxHash: string) => {
 
         const ethAdapter = await this.getEthAdapter();
-        const safeService = new SafeServiceClient({ txServiceUrl: 'https://safe-transaction-goerli.safe.global', ethAdapter })
+        const safeService = new SafeApiKit({ txServiceUrl: 'https://safe-transaction-goerli.safe.global', ethAdapter })
           
           const safeSdk = await Safe.create({
             ethAdapter,
@@ -187,7 +186,7 @@ export class TransactionUtils {
     static executeTransaction = async (safeAddress: string, safeTxHash: string) => {
 
         const ethAdapter = await this.getEthAdapter();
-        const safeService = new SafeServiceClient({ txServiceUrl: 'https://safe-transaction-goerli.safe.global', ethAdapter })
+        const safeService = new SafeApiKit({ txServiceUrl: 'https://safe-transaction-goerli.safe.global', ethAdapter })
           
         const safeSdk = await Safe.create({
         ethAdapter,
