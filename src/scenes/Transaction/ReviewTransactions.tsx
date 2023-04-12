@@ -1,5 +1,5 @@
-import SafeServiceClient from '@safe-global/safe-service-client';
 import { ethers } from 'ethers';
+import SafeApiKit from '@safe-global/api-kit';
 import React, { useEffect, useState } from 'react'
 import { TransactionUtils } from '../../utils/TransactionUtils';
 
@@ -16,7 +16,7 @@ function ReviewTransactions() {
         async function getPendingTransactions() {
             const txServiceUrl = 'https://safe-transaction-goerli.safe.global'
             const ethAdapter = await TransactionUtils.getEthAdapter(false)
-            const safeService = new SafeServiceClient({ txServiceUrl, ethAdapter })
+            const safeService = new SafeApiKit({ txServiceUrl, ethAdapter })
             console.log({safeAddress, safeService});
             const pendingTransactionsResults = (await safeService.getPendingTransactions(safeAddress)).results
             setPendingTransactions(pendingTransactionsResults);
