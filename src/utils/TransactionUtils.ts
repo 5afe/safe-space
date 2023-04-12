@@ -1,9 +1,9 @@
-import { ethers } from "ethers"
+import { ethers } from 'ethers'
 import SafeApiKit from '@safe-global/api-kit'
 import Safe, { EthersAdapter, SafeFactory, SafeAccountConfig } from '@safe-global/protocol-kit'
-import { MetaTransactionData, OperationType, MetaTransactionOptions, RelayTransaction } from "@safe-global/safe-core-sdk-types"
-import { GelatoRelayAdapter } from "@safe-global/relay-kit"
-import { CHAIN_INFO } from "./Chain"
+import { MetaTransactionData, OperationType, MetaTransactionOptions, RelayTransaction } from '@safe-global/safe-core-sdk-types'
+import { GelatoRelayAdapter } from '@safe-global/relay-kit'
+import { CHAIN_INFO } from './Chain'
 
 declare global {
     interface Window {
@@ -20,7 +20,7 @@ export class TransactionUtils {
     static getEthAdapter = async (useSigner: boolean = true) => {
 
         if (!window.ethereum) {
-            throw  new  Error("No crypto wallet found. Please install it.")
+            throw  new  Error('No crypto wallet found. Please install it.')
         }
     
         const  provider = new  ethers.providers.Web3Provider(window.ethereum)
@@ -28,7 +28,7 @@ export class TransactionUtils {
 
         if(useSigner) {
             // Triggers the wallet to ask the user to sign in
-            await  window.ethereum.send("eth_requestAccounts")
+            await  window.ethereum.send('eth_requestAccounts')
             signer = provider.getSigner()
         }
 
