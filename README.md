@@ -10,6 +10,7 @@ A marketplace for buying and selling things with Safe accounts.
 ```
 git clone https://github.com/5afe/safe-space
 cd safe-space
+# git checkout <version> #optional if you want to use a specific version e.g. git checkout 0.4.0
 yarn install
 yarn start
 ```
