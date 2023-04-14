@@ -1,6 +1,6 @@
 /**
  * A dict that maps the chainId to the chainName, rpcUrl, and blockExplorerUrl, transaction service url
- * For Goerli and Binance  Smarrt chain,
+ * 
  */
 
 // ChainInfo is the type of the chain info object
@@ -30,6 +30,13 @@ export const CHAIN_INFO: { [chainId: string]: ChainInfo } = {
         blockExplorerUrl: 'https://goerli.etherscan.io',
         transactionServiceUrl: 'https://safe-transaction-goerli.safe.global',
         symbol: 'gor'
+    },
+    '137': {
+        chainName: 'Polygon Mainnet',
+        rpcUrl: 'https://rpc-mainnet.maticvigil.com',
+        blockExplorerUrl: 'https://polygonscan.com',
+        transactionServiceUrl: 'https://safe-transaction-polygon.safe.global',
+        symbol: 'matic',
     },
     '56': {
         chainName: 'Binance Smart Chain',
