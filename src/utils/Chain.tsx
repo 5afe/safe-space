@@ -37,6 +37,13 @@ export const CHAIN_INFO: { [chainId: string]: ChainInfo } = {
         transactionServiceUrl: 'https://safe-transaction-polygon.safe.global',
         symbol: 'matic',
     },
+    '100': {
+        chainName: 'Gnosis Chain',
+        rpcUrl: 'https://rpc.ankr.com/gnosis',
+        blockExplorerUrl: 'https://gnosisscan.io',
+        transactionServiceUrl: 'https://safe-transaction-gnosis-chain.safe.global',
+        symbol: 'gno'
+    },
     '56': {
         chainName: 'Binance Smart Chain',
         rpcUrl: 'https://bsc-dataseed.binance.org',
