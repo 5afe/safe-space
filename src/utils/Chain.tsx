@@ -14,7 +14,7 @@ export type ChainInfo = {
 
 export const DEFAULT_CHAIN_ID = '5';
 // value of the default destination address (vitalik.eth) (used for testing)
-export const DEFAULT_DESTIANTION_ADDRESS = '0xd8da6bf26964af9d7eed9e03e53415d37aa96045';
+export const DEFAULT_DESTINATION_ADDRESS = '0xd8da6bf26964af9d7eed9e03e53415d37aa96045';
 
 export const CHAIN_INFO: { [chainId: string]: ChainInfo } = {
     '1': {
