@@ -1,9 +1,7 @@
 /**
  * A dict that maps the chainId to the chainName, rpcUrl, and blockExplorerUrl, transaction service url
- * 
- */
+*/
 
-// ChainInfo is the type of the chain info object
 export type ChainInfo = {
     chainName: string
     rpcUrl: string
@@ -13,6 +11,7 @@ export type ChainInfo = {
 }
 
 export const DEFAULT_CHAIN_ID = '5';
+
 // value of the default destination address (vitalik.eth) (used for testing)
 export const DEFAULT_DESTINATION_ADDRESS = '0xd8da6bf26964af9d7eed9e03e53415d37aa96045';
 
