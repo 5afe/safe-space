@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TextUtils } from '../../utils/TextUtils';
 import { TransactionUtils } from '../../utils/TransactionUtils';
 import WalletManage from './WalletManage';
+import AccountCreate from './AccountCreate';
 
 function WalletCreate() {
   const [inputs, setInputs] = useState([{ key: TextUtils.randomString(), value: '' }]);
@@ -44,6 +45,7 @@ function WalletCreate() {
   return (
     <div>
     <div className='EventDetail container card shadow my-5 p-5'>
+        <AccountCreate />
         <h1 className='text-center mb-3'>
                 Create a Wallet
         </h1>
