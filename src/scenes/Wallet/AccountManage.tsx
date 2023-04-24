@@ -7,7 +7,7 @@ import { ADAPTER_EVENTS, CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAP
 const connectedHandler: Web3AuthEventListener = (data) => console.log('CONNECTED', data)
 const disconnectedHandler: Web3AuthEventListener = (data) => console.log('DISCONNECTED', data)
 
-function AccountManage() {
+function AccountManage({onLoggedIn}: {onLoggedIn?: (provider: SafeEventEmitterProvider) => void}) {
 
   const [safeAuthSignInResponse, setSafeAuthSignInResponse] = useState<SafeAuthSignInData | null>(
     null
@@ -93,6 +93,8 @@ function AccountManage() {
 
     setSafeAuthSignInResponse(response)
     setProvider(safeAuth.getProvider() as SafeEventEmitterProvider)
+    console.log('PROVIDER: ', provider)
+    onLoggedIn?.(provider!)
   }
 
   const logout = async () => {
