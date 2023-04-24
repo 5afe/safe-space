@@ -1,31 +1,44 @@
-import React from 'react';
-import { SafeAuthKit, Web3AuthAdapter } from '@safe-global/auth-kit';
+import React, { useEffect, useState } from 'react';
+import { SafeAuthKit, SafeAuthSignInData, Web3AuthAdapter, Web3AuthEventListener } from '@safe-global/auth-kit';
 import { Web3AuthOptions } from '@web3auth/modal';
 import { OpenloginAdapter } from '@web3auth/openlogin-adapter';
-import { CHAIN_NAMESPACES, WALLET_ADAPTERS } from '@web3auth/base';
+import { ADAPTER_EVENTS, CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from '@web3auth/base';
+
+const connectedHandler: Web3AuthEventListener = (data) => console.log('CONNECTED', data)
+const disconnectedHandler: Web3AuthEventListener = (data) => console.log('DISCONNECTED', data)
 
 function AccountCreate() {
 
+  const [safeAuthSignInResponse, setSafeAuthSignInResponse] = useState<SafeAuthSignInData | null>(
+    null
+  )
+  const [safeAuth, setSafeAuth] = useState<SafeAuthKit<Web3AuthAdapter>>()
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null)
 
-  // function to create an account
-  const createAccount = async () => {
+  useEffect(() => {
+    ;(async () => {
 
-    // https://web3auth.io/docs/sdk/web/modal/initialize#arguments
-    const options: Web3AuthOptions = {
-    clientId: '<your_client_id>', // https://dashboard.web3auth.io/
-    web3AuthNetwork: 'testnet',
-    chainConfig: {
-        chainNamespace: CHAIN_NAMESPACES.EIP155,
-        chainId: '0x1',
-        rpcTarget: `https://rpc.payload.de`
-      },
-      uiConfig: {
-        theme: 'dark',
-        loginMethodsOrder: ['google', 'facebook']
-      },
-    };
-    // https://web3auth.io/docs/sdk/web/modal/initialize#configuring-adapters
-    const modalConfig = {
+      // https://dashboard.web3auth.io/
+      const WEB3_AUTH_CLIENT_ID=process.env.REACT_APP_WEB3_AUTH_CLIENT_ID!
+
+      // https://web3auth.io/docs/sdk/web/modal/initialize#arguments
+      const options: Web3AuthOptions = {
+        clientId: WEB3_AUTH_CLIENT_ID,
+        web3AuthNetwork: 'testnet',
+        chainConfig: {
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
+          chainId: '0x5',
+          // https://chainlist.org/
+          rpcTarget: `https://rpc.ankr.com/eth_goerli`
+        },
+        uiConfig: {
+          theme: 'dark',
+          loginMethodsOrder: ['google', 'facebook']
+        }
+      }
+
+      // https://web3auth.io/docs/sdk/web/modal/initialize#configuring-adapters
+      const modalConfig = {
         [WALLET_ADAPTERS.TORUS_EVM]: {
           label: 'torus',
           showOnModal: false
@@ -36,6 +49,7 @@ function AccountCreate() {
           showOnMobile: false
         }
       }
+
       // https://web3auth.io/docs/sdk/web/modal/whitelabel#whitelabeling-while-modal-initialization
       const openloginAdapter = new OpenloginAdapter({
         loginSettings: {
@@ -47,16 +61,48 @@ function AccountCreate() {
             name: 'Safe'
           }
         }
-      });
+      })
 
-    // Create an instance of the Web3AuthAdapter
-    const web3AuthAdapter = new Web3AuthAdapter(options, [openloginAdapter], modalConfig);
+      const adapter = new Web3AuthAdapter(options, [openloginAdapter], modalConfig)
 
-    // Create an instance of the SafeAuthKit using the adapter and the SafeAuthConfig allowed options
-    const safeAuthKit = await SafeAuthKit.init(web3AuthAdapter, {
+      const safeAuthKit = await SafeAuthKit.init(adapter, {
         txServiceUrl: 'https://safe-transaction-goerli.safe.global'
-      });
-    };
+      })
+
+
+      console.log({safeAuthKit})
+
+      safeAuthKit.subscribe(ADAPTER_EVENTS.CONNECTED, connectedHandler)
+
+      safeAuthKit.subscribe(ADAPTER_EVENTS.DISCONNECTED, disconnectedHandler)
+
+      setSafeAuth(safeAuthKit)
+
+      return () => {
+        safeAuthKit.unsubscribe(ADAPTER_EVENTS.CONNECTED, connectedHandler)
+        safeAuthKit.unsubscribe(ADAPTER_EVENTS.DISCONNECTED, disconnectedHandler)
+      }
+    })()
+  }, [])
+
+  const login = async () => {
+    if (!safeAuth) return
+
+    const response = await safeAuth.signIn()
+    console.log('SIGN IN RESPONSE: ', response)
+
+    setSafeAuthSignInResponse(response)
+    setProvider(safeAuth.getProvider() as SafeEventEmitterProvider)
+  }
+
+  const logout = async () => {
+    if (!safeAuth) return
+
+    await safeAuth.signOut()
+
+    setProvider(null)
+    setSafeAuthSignInResponse(null)
+  }
 
   return (
     <div>
@@ -66,11 +112,28 @@ function AccountCreate() {
         </h1>
         <button
           type="button"
-          className="btn btn-outline-primary my-2"
-          onClick={createAccount}
+          className="btn btn-primary my-2"
+          onClick={login}
         >
-          Create An Account
+          Log In
         </button>
+        <button
+          type="button"
+          className="btn btn-outline-primary my-2"
+          onClick={logout}
+        >
+          Log Out
+        </button>
+
+        {safeAuthSignInResponse && 
+        <div className="alert alert-success" role="alert">
+          Successful Login for User: {safeAuthSignInResponse.eoa}
+          <hr />
+          Safe's Owned: {safeAuthSignInResponse.safes?.join('\n')}
+        </div>
+          
+        }
+
         
     </div>
     </div>
