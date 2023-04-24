@@ -7,7 +7,7 @@ import { ADAPTER_EVENTS, CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAP
 const connectedHandler: Web3AuthEventListener = (data) => console.log('CONNECTED', data)
 const disconnectedHandler: Web3AuthEventListener = (data) => console.log('DISCONNECTED', data)
 
-function AccountCreate() {
+function AccountManage() {
 
   const [safeAuthSignInResponse, setSafeAuthSignInResponse] = useState<SafeAuthSignInData | null>(
     null
@@ -140,4 +140,4 @@ function AccountCreate() {
   );
 }
 
-export default AccountCreate;
+export default AccountManage;
