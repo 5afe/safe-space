@@ -3,6 +3,7 @@ import { TextUtils } from '../../utils/TextUtils';
 import { TransactionUtils } from '../../utils/TransactionUtils';
 import WalletManage from './WalletManage';
 import AccountManage from './AccountManage';
+import { SafeAuthKit, Web3AuthAdapter } from '@safe-global/auth-kit';
 
 function WalletCreate() {
   const [inputs, setInputs] = useState([{ key: TextUtils.randomString(), value: '' }]);
@@ -10,7 +11,7 @@ function WalletCreate() {
   const [threshold, setThreshold] = useState(1);
   // usestate for safe address
   const [safeAddress, setSafeAddress] = useState(localStorage.getItem('safeAddress')||'');
-  
+  const [account, setAccount] = useState<SafeAuthKit<Web3AuthAdapter>>()
   
 
   const addInput = () => {
@@ -30,6 +31,10 @@ function WalletCreate() {
     setThreshold(Number.parseInt(e.target.value));
   }
 
+  const handleLoggedIn = (loggedInAccount: SafeAuthKit<Web3AuthAdapter>) => {
+    setAccount(loggedInAccount);
+  }
+
   const removeInput = (inputToRemove: any) => {
     setInputs(inputs.filter((input, i) => input.key !== inputToRemove.key));
   };
@@ -45,7 +50,7 @@ function WalletCreate() {
   return (
     <div>
     <div className='EventDetail container card shadow my-5 p-5'>
-        <AccountManage />
+        <AccountManage onLoggedIn={handleLoggedIn} />
         <h1 className='text-center mb-3'>
                 Create a Wallet
         </h1>
@@ -114,7 +119,7 @@ function WalletCreate() {
           Save Safe Address to Local Storage
         </button>
     </div>
-    <WalletManage />
+    <WalletManage authKit={account} />
     </div>
   );
 }
