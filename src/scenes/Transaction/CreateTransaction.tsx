@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { TransactionUtils } from '../../utils/TransactionUtils';
 import { DEFAULT_DESTINATION_ADDRESS } from '../../utils/Chain';
-function CreateTransaction() {
+import { SafeAuthKit, Web3AuthAdapter } from '@safe-global/auth-kit';
+
+function CreateTransaction({authKit}: {authKit?: SafeAuthKit<Web3AuthAdapter>}) {
     const [address, setAddress] = useState<string>('');
     const [amount, setAmount] = useState<number>(0);
 
@@ -14,7 +16,7 @@ function CreateTransaction() {
     }
 
     function createTransaction(sponsored: boolean = false) {
-        const result = TransactionUtils.createTransaction(localStorage.getItem('safeAddress')!, address, amount, sponsored);
+        const result = TransactionUtils.createTransaction(localStorage.getItem('safeAddress')!, address, amount, sponsored, authKit);
         console.log(result);
     }
     

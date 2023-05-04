@@ -4,6 +4,7 @@ import Safe, { EthersAdapter, SafeFactory, SafeAccountConfig } from '@safe-globa
 import { MetaTransactionData, OperationType, MetaTransactionOptions, RelayTransaction } from '@safe-global/safe-core-sdk-types'
 import { GelatoRelayAdapter } from '@safe-global/relay-kit'
 import { CHAIN_INFO } from './Chain'
+import { SafeAuthKit, Web3AuthAdapter } from '@safe-global/auth-kit'
 
 declare global {
     interface Window {
@@ -17,14 +18,23 @@ export class TransactionUtils {
      * https://stackoverflow.com/a/1054862/5405197
      */
 
-    static getEthAdapter = async (useSigner: boolean = true) => {
+    static getEthAdapter = async (useSigner: boolean = true, authKit?: SafeAuthKit<Web3AuthAdapter>) => {
 
-        if (!window.ethereum) {
-            throw  new  Error('No crypto wallet found. Please install it.')
+        // Using ethers
+
+        let provider, signer;
+
+        if (authKit) {
+            provider = new ethers.providers.Web3Provider(authKit.getProvider()!);
+            signer = provider.getSigner();
+        } else {
+
+            if (!window.ethereum) {
+                throw  new  Error('No crypto wallet found. Please install it.')
+            }
+        
+             provider = new  ethers.providers.Web3Provider(window.ethereum)
         }
-    
-        const  provider = new  ethers.providers.Web3Provider(window.ethereum)
-        let signer;
 
         if(useSigner) {
             // Triggers the wallet to ask the user to sign in
@@ -38,6 +48,8 @@ export class TransactionUtils {
             ethers,
             signerOrProvider: signer || provider
         })
+
+        console.log({authKit}, authKit?.getProvider(), provider, signer, ethAdapter)
 
         return ethAdapter;
     }
@@ -72,7 +84,8 @@ export class TransactionUtils {
         return { safe }
     }
 
-    static createTransaction = async (safeAddress: string, destination: string, amount: number|string, sponsored: boolean = false) => {
+    static createTransaction = async (safeAddress: string, destination: string, amount: number|string,
+         sponsored: boolean = false, authKit?: SafeAuthKit<Web3AuthAdapter>) => {
 
         amount = ethers.utils.parseUnits(amount.toString(), 'ether').toString()
 
@@ -82,7 +95,7 @@ export class TransactionUtils {
             value: amount
         }
 
-        const ethAdapter = await this.getEthAdapter();
+        const ethAdapter = await this.getEthAdapter(true, authKit);
         const safeSDK = await Safe.create({
             ethAdapter,
             safeAddress
